@@ -1,5 +1,6 @@
 class Board
-    
+    attr_reader :active_player
+
     def initialize(player1, player2)
         @player1 = player1
         @player2 = player2
@@ -33,12 +34,19 @@ class Board
         else 
             console.log("Sorry you can't go there. Try again")
         end
+        if active_player == player1 
+            active_player = player2
+        else
+            active_player = player1
+        end
+
         if winner?
             new_game()
             return
         end
-        
-        
+        if board_full
+            new_game()
+        end
     end
 
     def winner?()
@@ -59,7 +67,13 @@ class Board
     end
 
     def board_full()
-        g
+        @board.each do |i|
+            i.each do |t|
+                return false if t == nil
+            end
+        end
+        return true
+    end
     
     def new_game()
         @board = [[nil, nil, nil],
@@ -69,17 +83,26 @@ class Board
 end
 
 class Player
-    attr_reader :marker
+    attr_reader :marker, :name
 
-    def initialize(marker)
+    def initialize(name, marker)
         @marker = marker
+        @name = name
     end
 end
 
-paul = Player.new("X")
-zach = Player.new("O")
+paul = Player.new("Paul", "X")
+zach = Player.new("Zach", "O")
 game = Board.new(paul, zach)
+
 game.board
+
+while true do
+    puts "It's #{game.active_player.name}'s turn to play"
+    move = gets.chomp()
+    break if move == "quit"
+    game.play(move)
+end
 
 
 
