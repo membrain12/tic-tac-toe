@@ -25,9 +25,47 @@ class Board
         end
     end
 
-    def play(player, position)
-        marker = player.marker
+    def play(position)
+        marker = @active_player.marker
+        location = @key[position]
+        if @board[location[0]][location[1]] == nil
+            @board[location[0]][location[1]] = marker
+        else 
+            console.log("Sorry you can't go there. Try again")
+        end
+        if winner?
+            new_game()
+            return
+        end
+        
+        
+    end
 
+    def winner?()
+        li = @board
+        #horizontal wins
+        return true if li[0][0] == li[0][1] && li[0][1] == li[0][2]
+        return true if li[1][0] == li[1][1] && li[1][1] == li[1][2]
+        return true if li[2][0] == li[2][1] && li[2][1] == li[2][2]
+        #vertical wins
+        return true if li[0][0] == li[1][0] && li[1][0] == li[2][0]
+        return true if li[0][1] == li[1][1] && li[1][1] == li[2][1]
+        return true if li[0][2] == li[1][2] && li[1][2] == li[2][2]
+        #diagonal wins
+        return true if li[0][0] == li[1][1] && li[1][1] == li[2][2]
+        return true if li[0][2] == li[1][1] && li[1][1] == li[2][0]
+
+        return false
+    end
+
+    def board_full()
+        g
+    
+    def new_game()
+        @board = [[nil, nil, nil],
+                  [nil, nil, nil],
+                  [nil, nil, nil]]
+    end
 end
 
 class Player
@@ -41,4 +79,7 @@ end
 paul = Player.new("X")
 zach = Player.new("O")
 game = Board.new(paul, zach)
-puts game.board
+game.board
+
+
+
