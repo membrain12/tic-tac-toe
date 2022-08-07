@@ -38,6 +38,7 @@ class Game():
         
         if self.is_winner():
             print(f"{self.active_player.name} won!\n")
+            self.active_player.score += 1
             self.new_game()
 
         if self.is_full():
@@ -82,6 +83,13 @@ class Game():
                 if i == None:
                     return False
         return True
+
+    def is_empty(self):
+        for row in self.board:
+            for i in row:
+                if i != None:
+                    return False
+        return True
         
     def new_game(self):
             self.active_player = self.player1
@@ -96,20 +104,30 @@ class Player():
     def __init__(self, name, marker):
         self.name = name
         self.marker = marker
+        self.score = 0
     
 paul = Player("Paul", "X")
 zach = Player("Zach", "O")
 game = Game(paul, zach)
 options = ["tl", "t", "tr", "l", "m", "r", "bl", "b", "br"]
+options_explained = ["top-left", "top", "top-right", "left", "middle", "right", "bottom-left", "bottom", "bottom-right"]
+
+print("These are your options to play\n")
+print(options)
+print(options_explained)
+print("Type quit to end the game\n")
 
 while True:
+    if game.is_empty():
+        print("Type quit to end the games\n")
+        print(f"The Score is \n{game.player1.name}: {game.player1.score}\n{game.player2.name}: {game.player2.score}")
     game.print_board()
     move = input(f"It's {game.active_player.name}'s turn.\n")
     if move == 'quit':
         break
     if move not in options:
         print("Not a valid move. Please try again.\n")
-        
+        continue
     game.play(move)
 
 
