@@ -24,26 +24,33 @@ class Board
             p i 
             puts
         end
+        20.times do
+            print "-"
+        end
+        puts
     end
 
     def play(position)
         marker = @active_player.marker
         location = @key[position]
-        if @board[location[0]][location[1]] == nil
+        if @board[location[0]][location[1]].nil?
             @board[location[0]][location[1]] = marker
         else 
-            console.log("Sorry you can't go there. Try again")
+            puts "Sorry you can't go there. Try again"
+            return
         end
-        if active_player == player1 
-            active_player = player2
+
+        if @active_player == @player1 
+            @active_player = @player2
         else
-            active_player = player1
+            @active_player = @player1
         end
 
         if winner?
             new_game()
             return
         end
+  
         if board_full
             new_game()
         end
@@ -52,16 +59,16 @@ class Board
     def winner?()
         li = @board
         #horizontal wins
-        return true if li[0][0] == li[0][1] && li[0][1] == li[0][2]
-        return true if li[1][0] == li[1][1] && li[1][1] == li[1][2]
-        return true if li[2][0] == li[2][1] && li[2][1] == li[2][2]
+        return true if li[0][0] == li[0][1] && li[0][1] == li[0][2] && li[0][0] != nil
+        return true if li[1][0] == li[1][1] && li[1][1] == li[1][2] && li[1][0] != nil
+        return true if li[2][0] == li[2][1] && li[2][1] == li[2][2] && li[2][0] != nil
         #vertical wins
-        return true if li[0][0] == li[1][0] && li[1][0] == li[2][0]
-        return true if li[0][1] == li[1][1] && li[1][1] == li[2][1]
-        return true if li[0][2] == li[1][2] && li[1][2] == li[2][2]
+        return true if li[0][0] == li[1][0] && li[1][0] == li[2][0] && li[0][0] != nil
+        return true if li[0][1] == li[1][1] && li[1][1] == li[2][1] && li[0][1] != nil
+        return true if li[0][2] == li[1][2] && li[1][2] == li[2][2] && li[0][2] != nil
         #diagonal wins
-        return true if li[0][0] == li[1][1] && li[1][1] == li[2][2]
-        return true if li[0][2] == li[1][1] && li[1][1] == li[2][0]
+        return true if li[0][0] == li[1][1] && li[1][1] == li[2][2] && li[0][0] != nil
+        return true if li[0][2] == li[1][1] && li[1][1] == li[2][0] && li[1][1] != nil
 
         return false
     end
@@ -95,14 +102,20 @@ paul = Player.new("Paul", "X")
 zach = Player.new("Zach", "O")
 game = Board.new(paul, zach)
 
-game.board
+options = ["tl", "t", "tr", "l", "m", "r", "bl", "b", "br"]
 
-while true do
+loop do 
+    game.board
     puts "It's #{game.active_player.name}'s turn to play"
-    move = gets.chomp()
+    move = gets.chomp
+    if !options.include?(move) && move != "quit"
+        puts "That's not a position. Try again"
+        next   
+    end
     break if move == "quit"
     game.play(move)
 end
+
 
 
 
