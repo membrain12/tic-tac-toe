@@ -37,7 +37,11 @@ class Game():
             return
         
         if self.is_winner():
-            print(f"{self.active_player.name} won!")
+            print(f"{self.active_player.name} won!\n")
+            self.new_game()
+
+        if self.is_full():
+            print("No winner this time!\n")
             self.new_game()
         
         if self.active_player == self.player1:
@@ -71,6 +75,13 @@ class Game():
             return True
         
         return False
+
+    def is_full(self):
+        for row in self.board:
+            for i in row:
+                if i == None:
+                    return False
+        return True
         
     def new_game(self):
             self.active_player = self.player1
@@ -89,12 +100,16 @@ class Player():
 paul = Player("Paul", "X")
 zach = Player("Zach", "O")
 game = Game(paul, zach)
+options = ["tl", "t", "tr", "l", "m", "r", "bl", "b", "br"]
 
 while True:
     game.print_board()
     move = input(f"It's {game.active_player.name}'s turn.\n")
     if move == 'quit':
         break
+    if move not in options:
+        print("Not a valid move. Please try again.\n")
+        
     game.play(move)
 
 
