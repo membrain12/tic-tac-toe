@@ -36,11 +36,49 @@ class Game():
             print("That place is taken. Please try again.")
             return
         
+        if self.is_winner():
+            print(f"{self.active_player.name} won!")
+            self.new_game()
+        
         if self.active_player == self.player1:
             self.active_player = self.player2
         else:
             self.active_player = self.player1
+
         
+
+    def is_winner(self):
+        li = self.board
+
+        #horizontal wins
+        if li[0][0] == li[0][1] and li[0][1] == li[0][2] and li[0][0] != None:
+            return True
+        if li[1][0] == li[1][1] and li[1][1] == li[1][2] and li[1][0] != None:
+            return True
+        if li[2][0] == li[2][1] and li[2][1] == li[2][2] and li[2][0] != None:
+            return True
+        #vertical wins
+        if li[0][0] == li[1][0] and li[1][0] == li[2][0] and li[0][0] != None:
+            return True
+        if li[0][1] == li[1][1] and li[1][1] == li[2][1] and li[0][1] != None:
+            return True
+        if li[0][2] == li[1][2] and li[1][2] == li[2][2] and li[0][2] != None:
+            return True
+        #diagonal wins
+        if li[0][0] == li[1][1] and li[1][1] == li[2][2] and li[0][0] != None:
+            return True
+        if li[0][2] == li[1][1] and li[1][1] == li[2][0] and li[0][2] != None:
+            return True
+        
+        return False
+        
+    def new_game(self):
+            self.active_player = self.player1
+            self.board = [[None, None, None],
+                          [None, None, None],
+                          [None, None, None]]
+            
+
 
 
 class Player():
@@ -55,7 +93,6 @@ game = Game(paul, zach)
 while True:
     game.print_board()
     move = input(f"It's {game.active_player.name}'s turn.\n")
-    print(move)
     if move == 'quit':
         break
     game.play(move)
