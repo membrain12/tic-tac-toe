@@ -1,3 +1,6 @@
+from ast import While
+
+
 class Game():
     def __init__(self, player1, player2):
         self.player1 = player1
@@ -49,10 +52,14 @@ paul = Player("Paul", "X")
 zach = Player("Zach", "O")
 game = Game(paul, zach)
 
+while True:
+    game.print_board()
+    move = input(f"It's {game.active_player.name}'s turn.\n")
+    print(move)
+    if move == 'quit':
+        break
+    game.play(move)
 
 
-game.print_board()
-game.play("tl")
-game.print_board()
 
 
